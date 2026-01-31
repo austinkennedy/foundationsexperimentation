@@ -19,7 +19,10 @@ const els = {
   previewSection: document.getElementById("previewSection"),
   previewStats: document.getElementById("previewStats"),
   previewTable: document.getElementById("previewTable"),
-  downloadBtn: document.getElementById("downloadBtn")
+  downloadBtn: document.getElementById("downloadBtn"),
+  saveRegistryBtn: document.getElementById("saveRegistryBtn"),
+  registryModal: document.getElementById("registryModal"),
+  dismissBannerBtn: document.getElementById("dismissBannerBtn")
 };
 
 const state = {
@@ -79,6 +82,7 @@ function resetStateForNewFile() {
   els.configCard.classList.add("hidden");
   els.previewSection.classList.add("hidden");
   els.downloadBtn.disabled = true;
+  els.saveRegistryBtn.disabled = true;
   els.previewTable.innerHTML = "";
   els.previewStats.textContent = "";
 }
@@ -244,10 +248,18 @@ els.fileInput.addEventListener("change", () => {
 
       state.headers = headers;
       state.rows = results.data;
+      state.outputHeaders = [...headers];
+      state.assignmentColumn = "";
+      state.randomized = false;
       populateColumnInputs(headers);
       els.configCard.classList.remove("hidden");
       els.fileStats.textContent = `${state.rows.length} rows, ${headers.length} columns`;
-      setStatus("Loaded. Configure and randomize.");
+      els.previewStats.textContent = `Previewing original data · ${state.rows.length} rows, ${headers.length} columns`;
+      renderPreview();
+      els.previewSection.classList.remove("hidden");
+      els.downloadBtn.disabled = true;
+      els.saveRegistryBtn.disabled = true;
+      setStatus("Loaded. Preview below, then configure and randomize.");
     },
     error: (error) => {
       showErrors(["CSV parsing failed.", error.message]);
@@ -391,6 +403,7 @@ els.randomizeBtn.addEventListener("click", async () => {
   renderPreview();
   els.previewSection.classList.remove("hidden");
   els.downloadBtn.disabled = false;
+  els.saveRegistryBtn.disabled = false;
   setStatus("Ready to download.");
 });
 
@@ -407,10 +420,25 @@ els.downloadBtn.addEventListener("click", async () => {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `randomized_${state.filename}`;
+  const baseName = state.filename.replace(/\.csv$/i, "");
+  link.download = `${baseName}_randomized.csv`;
   document.body.appendChild(link);
   link.click();
   link.remove();
   URL.revokeObjectURL(url);
   setStatus("Download complete.");
+});
+
+els.saveRegistryBtn.addEventListener("click", () => {
+  els.registryModal.classList.remove("hidden");
+});
+
+els.dismissBannerBtn.addEventListener("click", () => {
+  els.registryModal.classList.add("hidden");
+});
+
+els.registryModal.addEventListener("click", (event) => {
+  if (event.target.matches("[data-close='true']")) {
+    els.registryModal.classList.add("hidden");
+  }
 });
