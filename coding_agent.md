@@ -273,6 +273,25 @@ Extend download handler (app.js:410-430)
 1. Nav links work on both pages
 2. Active state highlights correctly on each page
 
+## Deployment
+
+### Frontend
+Hosted as static files on **Cloudflare** at `https://foundationsexperimentation.com`. Updates deploy automatically on push — no build step.
+
+### Backend
+Hosted on **Render** at `https://foundationsexperimentation.onrender.com`.
+- Root directory: `backend/`
+- Build command: `pip install -r requirements.txt`
+- Start command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+- Auto-deploys from GitHub on push (~1-3 min)
+- Free tier: spins down after 15 min inactivity; first request after idle has ~30s cold start
+
+### CORS
+`backend/main.py` allows: `localhost:3000`, `localhost:8000`, `https://foundationsexperimentation.com`, `https://www.foundationsexperimentation.com`.
+
+### Local Backend Development
+Set `API_BASE = ""` in `power.js` to route requests to a local server instead of Render.
+
 ## Running Locally
 ```bash
 # Backend (power analysis)

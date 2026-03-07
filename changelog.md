@@ -27,3 +27,13 @@
 ### Changed
 - `index.html` — replaced standalone `.brand` div with the shared navigation bar.
 - `coding_agent.md` — updated to document the full two-page architecture, power analysis backend, validation rules, testing checklist, and run instructions.
+
+## 2026-03-07
+
+### Added
+- **Render deployment** — FastAPI backend now hosted at `https://foundationsexperimentation.onrender.com`.
+  - Removed static file mount from `backend/main.py` (was incompatible with Render's `backend/` root directory).
+  - Added production frontend origins (`https://foundationsexperimentation.com`, `https://www.foundationsexperimentation.com`) to CORS allowlist.
+  - `power.js` `API_BASE` updated to point to the Render URL.
+  - Improved error handling in `power.js`: error responses with empty or non-JSON bodies no longer crash the client.
+  - Added cold-start warning to status message (free tier spins down after 15 min inactivity).
