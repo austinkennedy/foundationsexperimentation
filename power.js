@@ -119,8 +119,9 @@ async function solveSampleSize() {
   });
 
   if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.detail || "Calculation failed.");
+    let detail = "Calculation failed.";
+    try { detail = (await res.json()).detail || detail; } catch (_) {}
+    throw new Error(detail);
   }
   return res.json();
 }
@@ -141,8 +142,9 @@ async function solveMDE() {
   });
 
   if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.detail || "Calculation failed.");
+    let detail = "Calculation failed.";
+    try { detail = (await res.json()).detail || detail; } catch (_) {}
+    throw new Error(detail);
   }
   return res.json();
 }
@@ -199,7 +201,7 @@ els.calculateBtn.addEventListener("click", async () => {
     return;
   }
 
-  setStatus("Calculating…");
+  setStatus("Calculating… (first request may take ~30s if server is waking up)");
   els.calculateBtn.disabled = true;
 
   try {
