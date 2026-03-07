@@ -1,6 +1,6 @@
 /* Power Analysis – frontend logic */
 
-const API_BASE = "";
+const API_BASE = "https://foundationsexperimentation.onrender.com";
 
 // ---------------------------------------------------------------------------
 // DOM cache

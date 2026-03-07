@@ -19,8 +19,8 @@ app.add_middleware(
         "http://127.0.0.1:3000",
         "http://localhost:8000",
         "http://127.0.0.1:8000",
-        # TODO: add production frontend URL here once hosted
-        # "https://your-frontend.example.com",
+        "https://foundationsexperimentation.com",
+        "https://www.foundationsexperimentation.com",
     ],
     allow_methods=["POST"],
     allow_headers=["Content-Type"],
