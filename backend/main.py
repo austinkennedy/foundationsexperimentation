@@ -1,12 +1,10 @@
 """Power analysis API for binary (yes/no) outcomes."""
 
 import math
-from pathlib import Path
 from typing import Literal
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, model_validator
 from scipy.optimize import brentq
 from statsmodels.stats.power import NormalIndPower
@@ -21,6 +19,8 @@ app.add_middleware(
         "http://127.0.0.1:3000",
         "http://localhost:8000",
         "http://127.0.0.1:8000",
+        # TODO: add production frontend URL here once hosted
+        # "https://your-frontend.example.com",
     ],
     allow_methods=["POST"],
     allow_headers=["Content-Type"],
@@ -214,5 +214,3 @@ def solve_mde(req: MDERequest):
     )
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-app.mount("/", StaticFiles(directory=BASE_DIR, html=True), name="static")

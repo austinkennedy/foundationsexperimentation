@@ -49,10 +49,9 @@ h2 {
 }
 
 .intro {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap: 28px;
-  align-items: start;
+  position: relative;
+  display: block;
+  padding-right: calc(42.5% + 14px);
 }
 
 .eyebrow {
@@ -111,6 +110,10 @@ h2 {
 }
 
 .trust-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: calc(42.5% - 14px);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -479,6 +482,77 @@ button:focus {
 }
 
 /* ---------------------------------------------------------------------------
+   Help icons and tooltips
+   --------------------------------------------------------------------------- */
+
+.label-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.help-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--border);
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  cursor: help;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.help-icon:hover,
+.help-icon:focus {
+  background: var(--accent);
+  color: #fff;
+  outline: none;
+}
+
+.help-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 240px;
+  padding: 10px 12px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 400;
+  line-height: 1.45;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.25);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.help-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--ink);
+}
+
+.help-icon:hover .help-tooltip,
+.help-icon:focus .help-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ---------------------------------------------------------------------------
    Results display (power analysis)
    --------------------------------------------------------------------------- */
 
@@ -517,7 +591,16 @@ button:focus {
    --------------------------------------------------------------------------- */
 
 @media (max-width: 900px) {
-  .intro,
+  .intro {
+    padding-right: 0;
+  }
+
+  .trust-panel {
+    position: static;
+    width: 100%;
+    margin-top: 20px;
+  }
+
   .section-grid {
     grid-template-columns: 1fr;
   }
@@ -544,5 +627,16 @@ button:focus {
 
   .results-summary {
     grid-template-columns: 1fr;
+  }
+
+  .help-tooltip {
+    left: 0;
+    transform: translateX(0);
+    width: 200px;
+  }
+
+  .help-tooltip::after {
+    left: 12px;
+    transform: none;
   }
 }
